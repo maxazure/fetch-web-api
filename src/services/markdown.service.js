@@ -24,10 +24,25 @@ class MarkdownService {
   }
 
   sanitizeHtml(html) {
+    // 提取body内容
+    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+    html = bodyMatch ? bodyMatch[1] : html;
+
     // 移除HTML注释
     html = html.replace(/<!--[\s\S]*?-->/g, '');
+    
+    // 移除所有script标签及其内容
+    html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    
+    // 移除所有style标签及其内容
+    html = html.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+    
+    // 移除link标签
+    html = html.replace(/<link[^>]*>/gi, '');
+    
     // 移除特殊控制字符
-    html = html.replace(/[\x00-\x1F\x7F]/g, '');
+    html = html.replace(/[-]/g, '');
+    
     return html;
   }
 
