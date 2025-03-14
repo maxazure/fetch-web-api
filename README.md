@@ -41,15 +41,39 @@ npm start    # 生产模式
 
 ### Docker部署
 
-1. 构建Docker镜像：
+### 使用DockerHub镜像（推荐）
+
+直接从DockerHub拉取预构建的镜像：
 ```bash
-docker build -t fetch-web-api .
+docker pull maxazure/fetch-web-api:latest
+docker run -d -p 8810:8810 --name fetch-web-api maxazure/fetch-web-api
 ```
 
-2. 运行容器：
+### 本地构建（开发用）
+
+如果您想自行构建Docker镜像：
 ```bash
+docker build -t fetch-web-api .
 docker run -d -p 8810:8810 --name fetch-web-api fetch-web-api
 ```
+
+## 持续集成/持续部署
+
+本项目使用GitHub Actions进行自动化CI/CD流程：
+
+- 当代码推送到main分支时，自动触发构建流程
+- 自动构建Docker镜像
+- 自动推送到DockerHub
+  - 最新版本标签: `maxazure/fetch-web-api:latest`
+  - 提交版本标签: `maxazure/fetch-web-api:<commit-sha>`
+- 自动更新DockerHub仓库描述
+
+### 开发工作流
+
+1. 克隆仓库并创建新分支
+2. 提交代码更改
+3. 创建Pull Request到main分支
+4. 合并后自动触发构建和部署
 
 ## API文档
 
