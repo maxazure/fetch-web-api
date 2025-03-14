@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  fetch-web-api:
+    build: .
+    image: fetch-web-api
+    container_name: fetch-web-api
+    restart: unless-stopped
+    ports:
+      - "8810:8810"
+    environment:
+      - NODE_ENV=production
+      - USER_DATA_DIR=/tmp/chrome-data
+      - CHROME_PATH=/usr/bin/google-chrome
+    volumes:
+      - chrome-data:/tmp/chrome-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8810/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  chrome-data:
+    driver: local
