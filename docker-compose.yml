@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   fetch-web-api:
-    build: .
-    image: fetch-web-api
+    image: maxazure/fetch-web-api:latest
     container_name: fetch-web-api
     restart: unless-stopped
     ports:
